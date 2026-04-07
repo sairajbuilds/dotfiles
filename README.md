@@ -21,7 +21,7 @@ The goal of this setup is simple:
 
 **Operating System**
 
-* Fedora Asahi Linux
+* Fedora Asahi Linux Remix
 * Wayland
 * Hyprland
 
