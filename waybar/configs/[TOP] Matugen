@@ -1,0 +1,32 @@
+{
+  "include": "~/.config/waybar/modules",
+  "layer": "top",
+  "position": "top",
+  "margin-top": 6,
+  "margin-left": 10,
+  "margin-right": 10,
+  "spacing": 4,
+  "fixed-center": false,
+
+  "modules-left": [
+    "clock",
+    "custom/separator#blank_1",
+    "tray",
+    "network",
+    "bluetooth",
+    "custom/separator#blank_1",
+    "hyprland/workspaces"
+  ],
+
+  "modules-center": [],
+
+  "modules-right": [
+    "custom/swaync",
+    "custom/separator#blank_1",
+    "battery",
+    "custom/separator#blank_1",
+    "pulseaudio",
+    "custom/separator#blank_1",
+    "custom/power"
+  ]
+}

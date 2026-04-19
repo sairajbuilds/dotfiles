@@ -1,8 +1,8 @@
 /* ----------- 💫 https://github.com/JaKooLit 💫 -------- */
-/* ....................................*/
 /* ..........Half Moon.................. */
-/* NOTE: This is only for some waybar configs */
-/* --- 👍 shared by https://github.com/TomekBobrowicz  👍 --- */
+/* 🎨 Colors managed by Matugen — do not edit colors manually */
+
+@import "/home/sairaj/.config/waybar/themes/matugen-colors.css";
 
 * {
 font-size: 97%;
@@ -11,21 +11,21 @@ font-weight: bold;
 }
 
 window#waybar {
-  background-color: rgba(26,27,38,0);
-  border-bottom: 1px solid rgba(26,27,38,0);
+  background-color: rgba(0,0,0,0);
+  border-bottom: 1px solid rgba(0,0,0,0);
   border-radius: 0px;
-  color: #E6B673;
+  color: @subtext;
 }
 
 #taskbar,
 #workspaces {
-  background: #0F1419;
+  background: @base;
   margin: 5px;
   padding: 0px 1px;
   border-radius: 15px;
   border: 0px;
   font-style: normal;
-  color: #0F1419;
+  color: @base;
 }
 
 #taskbar button,
@@ -34,8 +34,8 @@ window#waybar {
   margin: 4px 3px;
   border-radius: 15px;
   border: 0px;
-  color: #0F1419;
-  background: linear-gradient(45deg, #95E6CB, #59C2FF, #D2A6FF);
+  color: @base;
+  background: linear-gradient(45deg, @gradient_start, @gradient_mid, @gradient_end);
   opacity: 0.5;
   transition: all 0.3s cubic-bezier(.55,-0.68,.48,1.682);
 }
@@ -46,8 +46,8 @@ window#waybar {
   margin: 4px 3px;
   border-radius: 15px;
   border: 0px;
-  color: #0F1419;
-  background: linear-gradient(45deg, #59C2FF, #D2A6FF);
+  color: @base;
+  background: linear-gradient(45deg, @accent1, @accent2);
   opacity: 1.0;
   min-width: 40px;
   transition: all 0.3s cubic-bezier(.55,-0.68,.48,1.682);
@@ -55,242 +55,229 @@ window#waybar {
 
 #workspaces button:hover {
   border-radius: 15px;
-  color: #0F1419;
-  background: linear-gradient(45deg, #59C2FF, #D2A6FF);
+  color: @base;
+  background: linear-gradient(45deg, @accent1, @accent2);
   opacity: 0.8;
   transition: all 0.3s cubic-bezier(.55,-0.68,.48,1.682);
-
 }
+
 @keyframes gradient_horizontal {
-0% {
-  background-position: 0% 50%;
-	}
-50% {
-  background-position: 100% 50%;
-	}
-100% {
-  background-position: 0% 50%;
-	}
+0% { background-position: 0% 50%; }
+50% { background-position: 100% 50%; }
+100% { background-position: 0% 50%; }
 }
 
 @keyframes swiping {
-0% {
-  background-position: 0% 200%;
-	}
-100% {
-  background-position: 200% 200%;
-	}
+0% { background-position: 0% 200%; }
+100% { background-position: 200% 200%; }
 }
 
 tooltip {
-background: #0F1419;
-border: 1px solid #D2A6FF;
+background: @base;
+border: 1px solid @accent2;
 border-radius: 10px;
 }
 
 tooltip label {
-color: #F3F4F5;
+color: @text;
 }
 
 #window {
-	color: #E6E1CF;
-	background: #0F1419;
-	border-radius: 50px 50px;
-	margin: 5px;
-	padding: 2px 15px;
+  color: @text;
+  background: @base;
+  border-radius: 50px 50px;
+  margin: 5px;
+  padding: 2px 15px;
 }
 
 #temperature,
 #memory {
-	color: #E6B673;
-	background: #0F1419;
-	border-radius: 50px 50px;
-	margin: 5px;
-	padding: 2px 15px;
+  color: @subtext;
+  background: @base;
+  border-radius: 50px 50px;
+  margin: 5px;
+  padding: 2px 15px;
 }
 
 #custom-light_dark,
 #custom-swaync,
 #idle_inhibitor,
 #clock {
-	color: #B8CC52;
-	background: #0F1419;
-	
-	
+  color: @green;
+  background: @base;
 }
 
 #bluetooth {
-	color: blue;
-	background: #0F1419;
-	border-radius: 50px 50px;
-	margin: 5px;
-	padding: 2px 15px;
+  color: @accent1;
+  background: @base;
+  border-radius: 50px 50px;
+  margin: 5px;
+  padding: 2px 15px;
 }
 
 #custom-cycle_wall,
 #cpu {
-	color: #F3F4F5;
-	background: #0F1419;
-	border-radius: 50px 50px;
-	margin: 5px;
-	padding: 2px 15px;
+  color: @text;
+  background: @base;
+  border-radius: 50px 50px;
+  margin: 5px;
+  padding: 2px 15px;
 }
 
 #disk {
-	color: #B8CC52;
-	background: #0F1419;
-	border-radius: 50px 50px;
-	margin: 5px;
-	padding: 2px 15px;
+  color: @green;
+  background: @base;
+  border-radius: 50px 50px;
+  margin: 5px;
+  padding: 2px 15px;
 }
 
 #backlight,
 # {
-	color: #F07178;
-	background: #0F1419;
-	border-radius: 50px 50px;
-	margin: 5px;
-	padding: 2px 15px;
+  color: @warm;
+  background: @base;
+  border-radius: 50px 50px;
+  margin: 5px;
+  padding: 2px 15px;
 }
 
 #backlight {
-	color: white;
-	background: #0F1419;
-	border-radius: 50px 50px;
-	margin: 5px;
-	padding: 2px 15px;
+  color: @text;
+  background: @base;
+  border-radius: 50px 50px;
+  margin: 5px;
+  padding: 2px 15px;
 }
 
 #network {
-	color: #FF8F40;
-	background: #0F1419;
-	border-radius: 50px 50px;
-	margin: 5px;
-	padding: 2px 15px;
+  color: @warm;
+  background: @base;
+  border-radius: 50px 50px;
+  margin: 5px;
+  padding: 2px 15px;
 }
 
 #custom-hyprbindings {
-	color: #D2A6FF;
-	background: #0F1419;
-	background: #0F1419;
-	border-radius: 50px 50px;
-	margin: 5px;
-	padding: 2px 15px;
+  color: @accent2;
+  background: @base;
+  border-radius: 50px 50px;
+  margin: 5px;
+  padding: 2px 15px;
 }
 
 #tray {
-	color: #E6E1CF;
-	background: #0F1419;
-	border-radius: 50px 50px;
-	margin: 5px;
-	padding: 2px 15px;
+  color: @text;
+  background: @base;
+  border-radius: 50px 50px;
+  margin: 5px;
+  padding: 2px 15px;
 }
 
 #pulseaudio, #battery {
-	color: #59C2FF;
-	background: #0F1419;
-	border-radius: 50px 50px;
-	margin: 5px;
-	padding: 2px 15px;
+  color: @accent1;
+  background: @base;
+  border-radius: 50px 50px;
+  margin: 5px;
+  padding: 2px 15px;
 }
 
 #custom-notification {
-	color: #95E6CB;
-	background: #0F1419;
-	border-radius: 50px 50px;
-	margin: 5px;
-	padding: 2px 15px;
+  color: @accent3;
+  background: @base;
+  border-radius: 50px 50px;
+  margin: 5px;
+  padding: 2px 15px;
 }
 
 #custom-weather {
-	color: #59C2FF;
-	background: #0F1419;
-	border-radius: 50px 50px;
-	margin: 5px;
-	padding: 2px 15px;
+  color: @accent1;
+  background: @base;
+  border-radius: 50px 50px;
+  margin: 5px;
+  padding: 2px 15px;
 }
 
 #custom-menu {
-	color: #59C2FF;
-	background: #0F1419;
-	border-radius: 0px 15px 50px 0px;
-	margin: 5px 5px 5px 0px;
-	padding: 1px 15px;
+  color: @accent1;
+  background: @base;
+  border-radius: 0px 15px 50px 0px;
+  margin: 5px 5px 5px 0px;
+  padding: 1px 15px;
 }
 
 #custom-power {
-	color: #D2A6FF;
-	background: #0F1419;
-	border-radius: 15px 0px 0px 50px;
-	margin: 5px 0px;
-	padding: 2px 5px 2px 15px;
-} 
+  color: @accent2;
+  background: @base;
+  border-radius: 15px 0px 0px 50px;
+  margin: 5px 0px;
+  padding: 2px 5px 2px 15px;
+}
 
 #custom-lock {
-	color: red;
-	background: #0F1419;
-	border-radius: 50px 50px;
-	margin: 5px;
-	padding: 2px 15px;
+  color: @warm;
+  background: @base;
+  border-radius: 50px 50px;
+  margin: 5px;
+  padding: 2px 15px;
 }
 
 #keyboard-state {
-	color: green;
-	background: #0F1419;
-	border-radius: 50px 50px;
-	margin: 5px;
-	padding: 2px 15px;
+  color: @green;
+  background: @base;
+  border-radius: 50px 50px;
+  margin: 5px;
+  padding: 2px 15px;
 }
 
 #battery.critical:not(.charging) {
-	color: #f53c3c;
-	animation-name: blink;
-	animation-duration: 0.5s;
-	animation-timing-function: linear;
-	animation-iteration-count: infinite;
-	animation-direction: alternate;
+  color: @warm;
+  animation-name: blink;
+  animation-duration: 0.5s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
 }
 
 #pulseaudio-slider slider {
-	min-width: 0px;
-	min-height: 0px;
-	opacity: 0;
-	background-image: none;
-	border: none;
-	box-shadow: none;
+  min-width: 0px;
+  min-height: 0px;
+  opacity: 0;
+  background-image: none;
+  border: none;
+  box-shadow: none;
 }
 
 #pulseaudio-slider trough {
-	min-width: 80px;
-	min-height: 5px;
-	border-radius: 5px;
-	background-color: #6E6A86;
+  min-width: 80px;
+  min-height: 5px;
+  border-radius: 5px;
+  background-color: @muted;
 }
 
 #pulseaudio-slider highlight {
-	min-height: 10px;
-	border-radius: 5px;
-	background-color: purple;
+  min-height: 10px;
+  border-radius: 5px;
+  background-color: @accent2;
 }
 
 #backlight-slider slider {
-	min-width: 0px;
-	min-height: 0px;
-	opacity: 0;
-	background-image: none;
-	border: none;
-	box-shadow: none;
+  min-width: 0px;
+  min-height: 0px;
+  opacity: 0;
+  background-image: none;
+  border: none;
+  box-shadow: none;
 }
 
 #backlight-slider trough {
-	min-width: 80px;
-	min-height: 10px;
-	border-radius: 5px;
-	background-color: #6E6A86;
+  min-width: 80px;
+  min-height: 10px;
+  border-radius: 5px;
+  background-color: @muted;
 }
 
 #backlight-slider highlight {
-	min-width: 10px;
-	border-radius: 5px;
-	background-color: purple;
+  min-width: 10px;
+  border-radius: 5px;
+  background-color: @accent1;
 }
