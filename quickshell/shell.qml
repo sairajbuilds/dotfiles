@@ -19,6 +19,8 @@ ShellRoot {
         property string batStatus: "Discharging"
         property string volume: "..."
         property string netName: "..."
+        property int brightness: 0
+        property int brightnessMax: 509
 
         Process {
             id: batReader
@@ -35,20 +37,6 @@ ShellRoot {
             running: true
             stdout: SplitParser {
                 onRead: data => bar.batStatus = data.trim()
-            }
-        }
-
-        Timer {
-            interval: 30000
-            repeat: true
-            running: true
-            onTriggered: {
-                batReader.running = false
-                batReader.running = true
-                batStatusReader.running = false
-                batStatusReader.running = true
-                netReader.running = false
-                netReader.running = true
             }
         }
 
@@ -82,10 +70,36 @@ ShellRoot {
             }
         }
 
+        // Watch brightness sysfs file directly for instant updates
+        Process {
+            id: brightWatcher
+            command: ["bash", "-c", "while true; do cat /sys/class/backlight/apple-panel-bl/brightness; inotifywait -q -e modify /sys/class/backlight/apple-panel-bl/brightness 2>/dev/null || sleep 0.5; done"]
+            running: true
+            stdout: SplitParser {
+                onRead: data => {
+                    var val = parseInt(data.trim())
+                    if (!isNaN(val)) bar.brightness = Math.round(val * 100 / bar.brightnessMax)
+                }
+            }
+        }
+
+        Timer {
+            interval: 30000
+            repeat: true
+            running: true
+            onTriggered: {
+                batReader.running = false
+                batReader.running = true
+                batStatusReader.running = false
+                batStatusReader.running = true
+                netReader.running = false
+                netReader.running = true
+            }
+        }
+
         Item {
             anchors.fill: parent
 
-            // Left island - Workspaces + Active Window
             Rectangle {
                 anchors.left: parent.left
                 anchors.top: parent.top
@@ -101,9 +115,7 @@ ShellRoot {
                     spacing: 10
 
                     RowLayout {
-                        id: wsRow
                         spacing: 6
-
                         Repeater {
                             model: 5
                             delegate: Rectangle {
@@ -130,14 +142,12 @@ ShellRoot {
                         }
                     }
 
-                    // Divider
                     Rectangle {
                         width: 1
                         height: 20
                         color: "#414868"
                     }
 
-                    // Active window title
                     Text {
                         text: Hyprland.focusedClient?.title?.substring(0, 30) ?? "Desktop"
                         color: "#7aa2f7"
@@ -149,7 +159,6 @@ ShellRoot {
                 }
             }
 
-            // Center island - Clock
             Rectangle {
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.top: parent.top
@@ -176,12 +185,11 @@ ShellRoot {
                 }
             }
 
-            // Right island - Network + Volume + Battery
             Rectangle {
                 anchors.right: parent.right
                 anchors.top: parent.top
                 anchors.margins: 8
-                width: 340
+                width: 420
                 height: 36
                 radius: 18
                 color: "#cc1a1b26"
@@ -194,6 +202,15 @@ ShellRoot {
                         text: "󰤨  " + bar.netName
                         color: bar.netName === "Disconnected" ? "#f7768e" : "#a9b1d6"
                         font.pixelSize: 13
+                        font.family: "Iosevka NF"
+                    }
+
+                    Text {
+                        property string icon: bar.brightness < 30 ? "󰃞" :
+                            bar.brightness < 70 ? "󰃟" : "󰃠"
+                        text: icon + "  " + bar.brightness + "%"
+                        color: "#a9b1d6"
+                        font.pixelSize: 14
                         font.family: "Iosevka NF"
                     }
 
