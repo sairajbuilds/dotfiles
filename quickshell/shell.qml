@@ -21,6 +21,9 @@ ShellRoot {
         property string netName: "..."
         property int brightness: 0
         property int brightnessMax: 509
+	property string mediaTitle: ""
+	property string mediaArtist: ""
+	property string mediaStatus: "Stopped"
 
         Process {
             id: batReader
@@ -92,6 +95,48 @@ ShellRoot {
 }
             }
         }
+
+	Process {
+    id: mediaTitleReader
+    command: ["bash", "-c", "playerctl metadata title 2>/dev/null || echo ''"]
+    running: true
+    stdout: SplitParser {
+        onRead: data => bar.mediaTitle = data.trim()
+    }
+}
+
+Process {
+    id: mediaArtistReader
+    command: ["bash", "-c", "playerctl metadata artist 2>/dev/null || echo ''"]
+    running: true
+    stdout: SplitParser {
+        onRead: data => bar.mediaArtist = data.trim()
+    }
+}
+
+Process {
+    id: mediaStatusReader
+    command: ["bash", "-c", "playerctl status 2>/dev/null || echo 'Stopped'"]
+    running: true
+    stdout: SplitParser {
+        onRead: data => bar.mediaStatus = data.trim()
+    }
+}
+
+Process {
+    id: mediaWatcher
+    command: ["bash", "-c", "playerctl --follow status 2>/dev/null"]
+    running: true
+    stdout: SplitParser {
+        onRead: data => {
+            bar.mediaStatus = data.trim()
+            mediaTitleReader.running = false
+            mediaTitleReader.running = true
+            mediaArtistReader.running = false
+            mediaArtistReader.running = true
+        }
+    }
+}
 
         Timer {
             interval: 30000
@@ -166,6 +211,55 @@ ShellRoot {
                         elide: Text.ElideRight
                         Layout.maximumWidth: 200
                     }
+                }
+            }
+
+		// Media island - only visible when playing
+            Rectangle {
+                anchors.left: parent.left
+                anchors.top: parent.top
+                anchors.leftMargin: leftRow.width + 48
+                anchors.topMargin: 8
+                width: mediaRow.width + 24
+                height: 36
+                radius: 18
+                color: "#cc1a1b26"
+                visible: bar.mediaTitle !== "" && bar.mediaStatus !== "Stopped"
+
+                Row {
+                    id: mediaRow
+                    anchors.centerIn: parent
+                    spacing: 10
+
+                    Text {
+                        property string icon: bar.mediaStatus === "Playing" ? "󰏤" : "󰐊"
+                        text: icon
+                        color: "#9ece6a"
+                        font.pixelSize: 14
+                        font.family: "Iosevka NF"
+                        anchors.verticalCenter: parent.verticalCenter
+                        MouseArea {
+                            anchors.fill: parent
+                            onClicked: {
+                                mediaPlayPause.running = false
+                                mediaPlayPause.running = true
+                            }
+                        }
+                    }
+
+                    Text {
+                        text: (bar.mediaArtist !== "" ? bar.mediaArtist + " — " : "") +
+                              bar.mediaTitle.substring(0, 25)
+                        color: "#9ece6a"
+                        font.pixelSize: 12
+                        font.family: "Iosevka NF"
+                        anchors.verticalCenter: parent.verticalCenter
+                    }
+                }
+
+                Process {
+                    id: mediaPlayPause
+                    command: ["playerctl", "play-pause"]
                 }
             }
 
