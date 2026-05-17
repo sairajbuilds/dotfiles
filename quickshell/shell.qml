@@ -41,13 +41,18 @@ ShellRoot {
         }
 
         Process {
-            id: volReader
-            command: ["bash", "-c", "wpctl get-volume @DEFAULT_AUDIO_SINK@ | awk '{printf \"%d\", $2*100}'"]
-            running: true
-            stdout: SplitParser {
-                onRead: data => bar.volume = data.trim()
-            }
+    id: volReader
+    command: ["bash", "-c", "wpctl get-volume @DEFAULT_AUDIO_SINK@ | awk '{printf \"%d\", $2*100}'"]
+    running: true
+    stdout: SplitParser {
+        onRead: data => {
+            bar.volume = data.trim()
+            volumeOsd.osdVolume = parseInt(data.trim())
+            volumeOsd.osdVisible = true
+            hideTimer.restart()
         }
+    }
+}
 
         Process {
             id: volWatcher
@@ -77,9 +82,14 @@ ShellRoot {
             running: true
             stdout: SplitParser {
                 onRead: data => {
-                    var val = parseInt(data.trim())
-                    if (!isNaN(val)) bar.brightness = Math.round(val * 100 / bar.brightnessMax)
-                }
+    var val = parseInt(data.trim())
+    if (!isNaN(val)) {
+        bar.brightness = Math.round(val * 100 / bar.brightnessMax)
+        brightnessOsd.osdBrightness = bar.brightness
+        brightnessOsd.brightOsdVisible = true
+        brightHideTimer.restart()
+    }
+}
             }
         }
 
@@ -234,6 +244,150 @@ ShellRoot {
                         font.pixelSize: 14
                         font.family: "Iosevka NF"
                     }
+                }
+            }
+        }
+    }
+
+// Volume OSD
+    PanelWindow {
+        id: volumeOsd
+        anchors.bottom: true
+        anchors.left: true
+        anchors.right: true
+        implicitHeight: 80
+        color: "transparent"
+        exclusiveZone: 0
+        visible: osdVisible
+
+        property bool osdVisible: false
+        property int osdVolume: 0
+
+        Timer {
+            id: hideTimer
+            interval: 1500
+            onTriggered: volumeOsd.osdVisible = false
+        }
+
+        Rectangle {
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.verticalCenter: parent.verticalCenter
+            width: 220
+            height: 48
+            radius: 24
+            color: "#ee1a1b26"
+            visible: volumeOsd.osdVisible
+
+            Row {
+                anchors.centerIn: parent
+                spacing: 12
+
+                Text {
+                    property string icon: volumeOsd.osdVolume === 0 ? "󰝟" :
+                        volumeOsd.osdVolume < 50 ? "󰕾" : "󰕿"
+                    text: icon
+                    color: "#a9b1d6"
+                    font.pixelSize: 18
+                    font.family: "Iosevka NF"
+                    anchors.verticalCenter: parent.verticalCenter
+                }
+
+                Rectangle {
+                    width: 100
+                    height: 6
+                    radius: 3
+                    color: "#414868"
+                    anchors.verticalCenter: parent.verticalCenter
+
+                    Rectangle {
+                        width: parent.width * (volumeOsd.osdVolume / 100)
+                        height: parent.height
+                        radius: 3
+                        color: "#a9b1d6"
+                        Behavior on width {
+                            NumberAnimation { duration: 100 }
+                        }
+                    }
+                }
+
+                Text {
+                    text: volumeOsd.osdVolume + "%"
+                    color: "#a9b1d6"
+                    font.pixelSize: 13
+                    font.family: "Iosevka NF"
+                    anchors.verticalCenter: parent.verticalCenter
+                }
+            }
+        }
+    }
+
+// Brightness OSD
+    PanelWindow {
+        id: brightnessOsd
+        anchors.bottom: true
+        anchors.left: true
+        anchors.right: true
+        implicitHeight: 80
+        color: "transparent"
+        exclusiveZone: 0
+        visible: brightOsdVisible
+
+        property bool brightOsdVisible: false
+        property int osdBrightness: 0
+
+        Timer {
+            id: brightHideTimer
+            interval: 1500
+            onTriggered: brightnessOsd.brightOsdVisible = false
+        }
+
+        Rectangle {
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.verticalCenter: parent.verticalCenter
+            width: 220
+            height: 48
+            radius: 24
+            color: "#ee1a1b26"
+            visible: brightnessOsd.brightOsdVisible
+
+            Row {
+                anchors.centerIn: parent
+                spacing: 12
+
+                Text {
+                    property string icon: brightnessOsd.osdBrightness < 30 ? "󰃞" :
+                        brightnessOsd.osdBrightness < 70 ? "󰃟" : "󰃠"
+                    text: icon
+                    color: "#a9b1d6"
+                    font.pixelSize: 18
+                    font.family: "Iosevka NF"
+                    anchors.verticalCenter: parent.verticalCenter
+                }
+
+                Rectangle {
+                    width: 100
+                    height: 6
+                    radius: 3
+                    color: "#414868"
+                    anchors.verticalCenter: parent.verticalCenter
+
+                    Rectangle {
+                        width: parent.width * (brightnessOsd.osdBrightness / 100)
+                        height: parent.height
+                        radius: 3
+                        color: "#e0af68"
+                        Behavior on width {
+                            NumberAnimation { duration: 100 }
+                        }
+                    }
+                }
+
+                Text {
+                    text: brightnessOsd.osdBrightness + "%"
+                    color: "#a9b1d6"
+                    font.pixelSize: 13
+                    font.family: "Iosevka NF"
+                    anchors.verticalCenter: parent.verticalCenter
                 }
             }
         }
