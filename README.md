@@ -43,6 +43,7 @@ The goal of this setup is simple:
 * zoxide — smart directory navigation
 * fzf — fuzzy search
 * ripgrep — fast search
+* yazi - CLI file manager
 
 ### Terminal Workflow
 
