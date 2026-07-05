@@ -1,0 +1,25 @@
+[user]
+    name = Sairaj Sawant
+    email = sairajssawant@proton.me
+
+[init]
+    defaultBranch = main
+
+[pull]
+    rebase = true
+
+[push]
+    autoSetupRemote = true
+
+[core]
+    editor = nvim
+    excludesfile = ~/.gitignore_global
+
+[merge]
+    conflictstyle = zdiff3
+
+[rerere]
+    enabled = true
+
+[color]
+    ui = auto
