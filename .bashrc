@@ -5,6 +5,8 @@ if [ -f /etc/bashrc ]; then
     . /etc/bashrc
 fi
 
+export PKG_CONFIG_PATH="/run/current-system/sw/lib/pkgconfig:$PKG_CONFIG_PATH"
+
 # User specific environment
 if ! [[ "$PATH" =~ "$HOME/.local/bin:$HOME/bin:" ]]; then
     PATH="$HOME/.local/bin:$HOME/bin:$PATH"
@@ -22,7 +24,7 @@ fi
 unset rc
 
 # Java
-export JAVA_HOME=/usr/lib/jvm/java-21-openjdk
+export JAVA_HOME="$(dirname $(dirname $(readlink -f $(which java))))"
 export PATH=$JAVA_HOME/bin:$PATH
 
 # NVM
@@ -49,9 +51,6 @@ else
 fi
 unset __conda_setup
 
-# Rust
-. "$HOME/.cargo/env"
-
 # Foundry
 export PATH="$PATH:$HOME/.foundry/bin"
 
@@ -62,6 +61,7 @@ export ANDROID_HOME="$HOME/Android/sdk"
 export ANDROID_SDK_ROOT="$ANDROID_HOME"
 export PATH="$PATH:$ANDROID_HOME/platform-tools"
 export PATH="$PATH:$ANDROID_HOME/cmdline-tools/latest/bin"
+export CHROME_EXECUTABLE=brave
 
 # rbenv (remove these two lines if you don't use Ruby)
 export PATH="$HOME/.rbenv/bin:$PATH"
@@ -118,19 +118,12 @@ proj() {
   tmux attach -t "$SESSION_NAME"
 }
 
-#Update
-update() {
-  echo "Updating system..."
-  sudo dnf upgrade -y
-  echo "Done."
-}
-
-#Browser
-zenb() {
-  zen &
-}
-
-
+#Update(Fedora)
+#update() {
+#  echo "Updating system..."
+#  sudo dnf upgrade -y
+#  echo "Done."
+#}
 
 # Aliases
 alias mongo-start="docker run --name mongodb -d -p 27017:27017 mongo:latest"
@@ -139,11 +132,8 @@ alias mongo-shell="docker exec -it mongodb mongosh"
 alias python=python3
 alias fixdns='sudo systemctl restart systemd-resolved'
 alias fixbluetooth='sudo systemctl restart bluetooth && sleep 2 && bluetoothctl power on'
-bash ~/playground/roast.sh
 eval "$(starship init bash)"
 alias ping9='ping 9.9.9.9'
-alias zen='flatpak run app.zen_browser.zen'
-export PATH=$PATH:/var/lib/flatpak/exports/bin:$HOME/.local/share/flatpak/exports/bin
 alias work="tmux attach -t main || tmux new -s main -c ~/Development"
 alias web3="cd ~/Development/Web3/Projects"
 alias dev="cd ~/Development"
