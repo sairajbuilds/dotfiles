@@ -35,9 +35,6 @@ export NVM_DIR="$HOME/.nvm"
 # Pyenv
 export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH"
-eval "$(pyenv init -)"
-eval "$(pyenv virtualenv-init -)"
-
 # Conda
 __conda_setup="$('/home/sairaj/miniconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
 if [ $? -eq 0 ]; then
@@ -75,22 +72,47 @@ export PATH=$PATH:/opt/gradle/gradle-8.7/bin
 # --------------------------------------------------
 
 proj() {
-  if [ -z "$1" ]; then
-    echo "Usage: proj <project-name>"
-    return
+  if [ $# -ne 1 ]; then
+    echo "Usage: proj <relative-path>"
+    return 1
   fi
 
-  PROJECT_NAME="$1"
-  PROJECT_DIR="$HOME/Development/Web3/Projects/$PROJECT_NAME"
-  SESSION_NAME="$PROJECT_NAME"
+  PROJECT_DIR="$HOME/Development/$1"
 
   if [ ! -d "$PROJECT_DIR" ]; then
-    echo "Project not found:"
-    echo "$PROJECT_DIR"
-    return
-  fi
+  echo "📁 Creating project: $PROJECT_DIR"
 
-  # If session exists → attach
+  mkdir -p "$PROJECT_DIR" || {
+    echo "Failed to create project directory."
+    return 1
+  }
+
+  (
+    cd "$PROJECT_DIR" || exit
+
+    git init
+
+    PROJECT_TITLE="$(basename "$PROJECT_DIR")"
+
+    cat > README.md <<EOF
+# $PROJECT_TITLE
+
+## Description
+
+TODO
+
+## Getting Started
+
+TODO
+EOF
+  )
+
+  echo "✅ Project created."
+fi
+
+  SESSION_NAME="$(basename "$PROJECT_DIR")"
+
+  # If session exists → switch/attach
   if tmux has-session -t "$SESSION_NAME" 2>/dev/null; then
     if [ -n "$TMUX" ]; then
       tmux switch-client -t "$SESSION_NAME"
@@ -115,7 +137,11 @@ proj() {
 
   tmux select-window -t "$SESSION_NAME":2
 
-  tmux attach -t "$SESSION_NAME"
+  if [ -n "$TMUX" ]; then
+    tmux switch-client -t "$SESSION_NAME"
+  else
+    tmux attach -t "$SESSION_NAME"
+  fi
 }
 
 #Update(Fedora)
