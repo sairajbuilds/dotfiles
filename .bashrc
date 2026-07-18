@@ -135,6 +135,8 @@ fi
   tmux new-window -t "$SESSION_NAME":4 -n "git" -c "$PROJECT_DIR"
   tmux send-keys -t "$SESSION_NAME":4 "lazygit" C-m
 
+  tmux new-window -t "$SESSION_NAME":5 -n "codex" -c "$PROJECT_DIR"
+
   tmux select-window -t "$SESSION_NAME":2
 
   if [ -n "$TMUX" ]; then
