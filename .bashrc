@@ -5,6 +5,8 @@ if [ -f /etc/bashrc ]; then
     . /etc/bashrc
 fi
 
+export PKG_CONFIG_PATH="/run/current-system/sw/lib/pkgconfig:$PKG_CONFIG_PATH"
+
 # User specific environment
 if ! [[ "$PATH" =~ "$HOME/.local/bin:$HOME/bin:" ]]; then
     PATH="$HOME/.local/bin:$HOME/bin:$PATH"
@@ -22,7 +24,7 @@ fi
 unset rc
 
 # Java
-export JAVA_HOME=/usr/lib/jvm/java-21-openjdk
+export JAVA_HOME="$(dirname $(dirname $(readlink -f $(which java))))"
 export PATH=$JAVA_HOME/bin:$PATH
 
 # NVM
@@ -33,9 +35,6 @@ export NVM_DIR="$HOME/.nvm"
 # Pyenv
 export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH"
-eval "$(pyenv init -)"
-eval "$(pyenv virtualenv-init -)"
-
 # Conda
 __conda_setup="$('/home/sairaj/miniconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
 if [ $? -eq 0 ]; then
@@ -49,9 +48,6 @@ else
 fi
 unset __conda_setup
 
-# Rust
-. "$HOME/.cargo/env"
-
 # Foundry
 export PATH="$PATH:$HOME/.foundry/bin"
 
@@ -62,6 +58,7 @@ export ANDROID_HOME="$HOME/Android/sdk"
 export ANDROID_SDK_ROOT="$ANDROID_HOME"
 export PATH="$PATH:$ANDROID_HOME/platform-tools"
 export PATH="$PATH:$ANDROID_HOME/cmdline-tools/latest/bin"
+export CHROME_EXECUTABLE=brave
 
 # rbenv (remove these two lines if you don't use Ruby)
 export PATH="$HOME/.rbenv/bin:$PATH"
@@ -75,22 +72,47 @@ export PATH=$PATH:/opt/gradle/gradle-8.7/bin
 # --------------------------------------------------
 
 proj() {
-  if [ -z "$1" ]; then
-    echo "Usage: proj <project-name>"
-    return
+  if [ $# -ne 1 ]; then
+    echo "Usage: proj <relative-path>"
+    return 1
   fi
 
-  PROJECT_NAME="$1"
-  PROJECT_DIR="$HOME/Development/Web3/Projects/$PROJECT_NAME"
-  SESSION_NAME="$PROJECT_NAME"
+  PROJECT_DIR="$HOME/Development/$1"
 
   if [ ! -d "$PROJECT_DIR" ]; then
-    echo "Project not found:"
-    echo "$PROJECT_DIR"
-    return
-  fi
+  echo "📁 Creating project: $PROJECT_DIR"
 
-  # If session exists → attach
+  mkdir -p "$PROJECT_DIR" || {
+    echo "Failed to create project directory."
+    return 1
+  }
+
+  (
+    cd "$PROJECT_DIR" || exit
+
+    git init
+
+    PROJECT_TITLE="$(basename "$PROJECT_DIR")"
+
+    cat > README.md <<EOF
+# $PROJECT_TITLE
+
+## Description
+
+TODO
+
+## Getting Started
+
+TODO
+EOF
+  )
+
+  echo "✅ Project created."
+fi
+
+  SESSION_NAME="$(basename "$PROJECT_DIR")"
+
+  # If session exists → switch/attach
   if tmux has-session -t "$SESSION_NAME" 2>/dev/null; then
     if [ -n "$TMUX" ]; then
       tmux switch-client -t "$SESSION_NAME"
@@ -113,24 +135,23 @@ proj() {
   tmux new-window -t "$SESSION_NAME":4 -n "git" -c "$PROJECT_DIR"
   tmux send-keys -t "$SESSION_NAME":4 "lazygit" C-m
 
+  tmux new-window -t "$SESSION_NAME":5 -n "codex" -c "$PROJECT_DIR"
+
   tmux select-window -t "$SESSION_NAME":2
 
-  tmux attach -t "$SESSION_NAME"
+  if [ -n "$TMUX" ]; then
+    tmux switch-client -t "$SESSION_NAME"
+  else
+    tmux attach -t "$SESSION_NAME"
+  fi
 }
 
-#Update
-update() {
-  echo "Updating system..."
-  sudo dnf upgrade -y
-  echo "Done."
-}
-
-#Browser
-zenb() {
-  zen &
-}
-
-
+#Update(Fedora)
+#update() {
+#  echo "Updating system..."
+#  sudo dnf upgrade -y
+#  echo "Done."
+#}
 
 # Aliases
 alias mongo-start="docker run --name mongodb -d -p 27017:27017 mongo:latest"
@@ -139,11 +160,8 @@ alias mongo-shell="docker exec -it mongodb mongosh"
 alias python=python3
 alias fixdns='sudo systemctl restart systemd-resolved'
 alias fixbluetooth='sudo systemctl restart bluetooth && sleep 2 && bluetoothctl power on'
-bash ~/playground/roast.sh
 eval "$(starship init bash)"
 alias ping9='ping 9.9.9.9'
-alias zen='flatpak run app.zen_browser.zen'
-export PATH=$PATH:/var/lib/flatpak/exports/bin:$HOME/.local/share/flatpak/exports/bin
 alias work="tmux attach -t main || tmux new -s main -c ~/Development"
 alias web3="cd ~/Development/Web3/Projects"
 alias dev="cd ~/Development"
