@@ -1,1 +1,14 @@
+# macOS
 .DS_Store
+
+# Editor
+.vscode/
+.idea/
+
+# Temporary
+*.swp
+*.swo
+*~
+
+# direnv
+.direnv/
