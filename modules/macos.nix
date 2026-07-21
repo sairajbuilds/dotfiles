@@ -13,6 +13,12 @@
 
       # Natural scrolling
       "com.apple.swipescrolldirection" = true;
+
+      NSAutomaticCapitalizationEnabled = false;
+      NSAutomaticDashSubstitutionEnabled = false;
+      NSAutomaticPeriodSubstitutionEnabled = false;    
+      NSAutomaticQuoteSubstitutionEnabled = false;
+      NSAutomaticSpellingCorrectionEnabled = false;
     };
 
     finder = {
@@ -23,6 +29,8 @@
 
       ShowPathbar = true;
       ShowStatusBar = true;
+
+      FXEnableExtensionChangeWarning = false;
     };
 
     dock = {
@@ -31,6 +39,12 @@
       show-recents = false;
       expose-group-apps = true;
       mineffect = "genie";
+      mru-spaces = false;
+
+      wvous-tl-corner = 1;
+      wvous-tr-corner = 1;
+      wvous-bl-corner = 1;
+      wvous-br-corner = 1;
     };
 
     screencapture = {

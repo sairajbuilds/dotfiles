@@ -13,6 +13,11 @@
 
     tmux.enable = true;
 
+    direnv = {
+      enable = true;
+      nix-direnv.enable = true;
+    };
+
     zsh = {
       enable = true;
       enableCompletion = true;
