@@ -7,5 +7,6 @@
     ../../modules/macos.nix
     ../../modules/fonts.nix
     ../../modules/security.nix
+    ../../modules/navidrome.nix
   ];
 }

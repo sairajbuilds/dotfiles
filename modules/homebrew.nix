@@ -24,6 +24,10 @@
       "mullvad-browser"
       "vscodium"
       "alt-tab"
+      "signal"
+      "appflowy"
+      "superproductivity"
+      "logseq"
     ];
   };
 }
