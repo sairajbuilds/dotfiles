@@ -10,6 +10,7 @@
     ./ghostty.nix
     ./aliases.nix
     ./direnv.nix
+    ./functions.nix
   ];
 
   home.username = "sairajsawant";
