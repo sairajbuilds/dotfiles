@@ -11,6 +11,5 @@
     grep = "rg";
     ".." = "cd ..";
     "..." = "cd ../..";
-    rebuild = "darwin-rebuild switch --flake ~/dotfiles";
   };
 }

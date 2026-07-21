@@ -67,5 +67,25 @@ EOF
         tmux attach -t "$session"
       fi
     }
+
+    rebuild() {
+      (
+        cd ~/dotfiles || return
+        sudo darwin-rebuild switch --flake .
+      )
+    }
+
+    update() {
+      (
+        cd ~/dotfiles || return
+        nix flake update
+        sudo darwin-rebuild switch --flake .
+      )
+    }
+
+    clean() {
+      sudo nix-collect-garbage -d
+      nix store optimise
+    }
   '';
-}
+}      

@@ -12,6 +12,7 @@
 
     brews = [
       "mas"
+      "navidrome"
     ];
 
     casks = [
@@ -26,8 +27,14 @@
       "alt-tab"
       "signal"
       "appflowy"
-      "superproductivity"
+      "super-productivity"
       "logseq"
+      "tailscale-app"
+      "musicbrainz-picard"
+      "proton-drive"
+      "proton-pass"
+      "protonvpn"
+      "jordanbaird-ice"
     ];
   };
 }
