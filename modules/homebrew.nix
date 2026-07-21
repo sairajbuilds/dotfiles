@@ -17,18 +17,13 @@
     casks = [
       "ghostty"
       "raycast"
-
       "android-studio"
-
       "orbstack"
-
-      "font-jetbrains-mono-nerd-font"
-
       "stats"
-
       "linearmouse"
-
       "mullvad-browser"
+      "vscodium"
+      "alt-tab"
     ];
   };
 }
