@@ -29,6 +29,7 @@
     # Git
     lazygit
     git-lfs
+    delta
 
     # Editor
     neovim
@@ -53,10 +54,12 @@
 
     # Containers
     docker-client
+    docker-compose
 
     # Utils
     imagemagick
     ffmpeg
+    cocoapods
 
     # Nix
     nil
@@ -64,6 +67,7 @@
 
     # Shell
     direnv
+    nix-index
 
     # Archives
     p7zip
@@ -80,6 +84,10 @@
 
     # macOS utilities
     mas
+
+    # Utilities
+    hyperfine
+    tokei
 
   ];
 }
