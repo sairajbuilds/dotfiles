@@ -59,6 +59,7 @@
     # Utils
     imagemagick
     ffmpeg
+    cocoapods
 
     # Nix
     nil

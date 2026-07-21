@@ -15,6 +15,10 @@
   home.username = "sairajsawant";
   home.homeDirectory = "/Users/sairajsawant";
 
+  home.sessionPath = [
+    "/opt/flutter/bin"
+  ];
+
   home.stateVersion = "25.05";
 
   programs.home-manager.enable = true;
