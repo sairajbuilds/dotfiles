@@ -35,6 +35,7 @@
       "proton-pass"
       "protonvpn"
       "jordanbaird-ice"
+      "blankie"
     ];
   };
 }
