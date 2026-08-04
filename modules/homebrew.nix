@@ -36,6 +36,10 @@
       "protonvpn"
       "jordanbaird-ice"
       "blankie"
+      "iina"
+      "pearcleaner"
+      "dockdoor"
+      "blip"
     ];
   };
 }

@@ -89,5 +89,11 @@
     hyperfine
     tokei
 
+   # Browser
+    brave
+
+   # Messenger
+    telegram-desktop
+
   ];
 }
